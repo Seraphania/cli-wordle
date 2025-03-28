@@ -14,10 +14,14 @@ def score_guess(guess, target):
             score[i] += 1
             if guess[i] == target[i]:
                 score[i] += 1
+                if guess.count(guess[0:i]) > target[0:i].count(guess[i]):
+                    score[i] = 0
+
     return tuple(score) # Just for DevRaf!
 
-guess = "world"
-target = "hello"
+guess = "melee"
+target = "elect"
 
 print(score_guess(guess, target))
 # Output: (2, 2, 2, 2, 2)
+
