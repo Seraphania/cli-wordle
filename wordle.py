@@ -4,7 +4,6 @@
 def score_guess(guess, target):
     score = [0,0,0,0,0]
     for i in range(len(guess)):
-        print(f"guess: {guess[i]}, target: {target[i]}")
         letter_score = target.find(guess[i])
         if letter_score >= 0:
             score[i] += 1
@@ -16,3 +15,4 @@ guess = "world"
 target = "world"
 
 print(score_guess(guess, target))
+# Output: (2, 2, 2, 2, 2)
