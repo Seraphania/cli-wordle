@@ -3,14 +3,14 @@
 
 
 # Pseudocode: score each letter
-#
-# for guess_letter in guess
-#   if guess_letter in target # Use find (will return the first index)
-#       increment score by 1
-#
-#   if the index value from find matches the current guess_letter index
-#       increment score by 1
 
+for guess_letter in guess
+   if guess_letter in target # Use find (will return the first index)
+        return target_index
+        increment score by 1
+
+    if target_index == guess_letter index
+        increment score by 1
 
 def score_guess(guess, target):
     score = (0,0,0,0,0)
