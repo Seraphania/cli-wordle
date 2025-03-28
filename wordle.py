@@ -12,7 +12,7 @@ def score_guess(guess, target):
         return score
 
 guess = "world"
-target = "world"
+target = "hello"
 
 print(score_guess(guess, target))
-# Returns (2, 2, 2, 2, 2)
+# Returns (0, 0, 0, 0, 0)
