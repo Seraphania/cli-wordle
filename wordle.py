@@ -63,13 +63,28 @@ def score_guess(guess, target):
                 score[i] += 1
     return tuple(score) # Just for DevRaf!
 
+# TODO #4
+# Use a sequential algorithm to read a list of valid words and a separate list of target words.
+
+
+# TODO #6
+def get_guess():
+    guess = str.upper(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\nGuess: "))
+    return guess
+
+# TODO #7
+# Check if the guess that is entered is a valid guess.
+# Case insensitivity!
+
+
+
 # TODO #9
 # End the game when the player wins or when all valid attempts are complete.
 
 instructions()
 target = get_target()
-print(f"Target: {target}")
-
+print(f"Target: {target}") # Delete this line later!
+print(get_guess())
 
 # TODO #10
 # Present a completion message to the user.
