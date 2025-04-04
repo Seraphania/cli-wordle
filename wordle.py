@@ -5,8 +5,8 @@ Designed to run in a CLI environment
 # Amanda Guest - 20147153
 # 28-March-2025
 
-# TODO #3
-# Present game instructions to player (That is, display an output to the screen).
+import random
+
 def instructions():
     """Define game rules"""
 
@@ -23,13 +23,22 @@ def instructions():
     Score:  X O _ _ _
     '''
     print(rules)
+    input("Press enter to begin... ")
 
 # TODO #4
 # Use a sequential algorithm to read a list of valid words and a separate list of target words.
-with open("./resources/target-words.txt", "r") as target_list:
-    target = []
-    for line in target_list:
-        target.append(line.strip())
+
+
+# TODO #5
+# Select a word at random from the list of target words using a library function (refer to the developer briefing for the exact syntax).
+def get_target():
+    """get a random word from target.txt"""
+    with open("./resources/target-words.txt", "r") as target_list:
+        target_words = []
+        for line in target_list:
+            target_words.append(line.strip())
+        target = str.upper(random.choice(target_words))
+        return target
 
 with open("./resources/all-words.txt", "r") as all_list:
     all_words = []
@@ -37,17 +46,12 @@ with open("./resources/all-words.txt", "r") as all_list:
         all_words.append(line.strip())
 
 
-# TODO #5
-# Select a word at random from the list of target words using a library function (refer to the developer briefing for the exact syntax).
-
 # TODO #6
 # Prompt the user to enter a guess.
-guess = "melee"
 
 # TODO #7
 # Check if the guess that is entered is a valid guess.
 # Case insensitivity!
-
 
 # TODO #8
 # Score the guess by providing clues on each character’s match to the target word’s characters.
@@ -64,19 +68,14 @@ def score_guess(guess, target):
                 score[i] += 1
     return tuple(score) # Just for DevRaf!
 
-# print(score_guess(guess, target))
-
-
 # TODO #9
 # End the game when the player wins or when all valid attempts are complete.
 
+instructions()
+target = get_target()
+print(f"Target: {target}")
+
+
 # TODO #10
 # Present a completion message to the user.
-
-instructions()
-
-
-
-
-
 
