@@ -14,6 +14,7 @@ def score_guess(guess, target):
             score[i] += 1
             if guess[i] == target[i]:
                 score[i] += 1
+<<<<<<< HEAD
     return tuple(score) # Just for DevRaf!
 
 target = "elect"
@@ -21,4 +22,16 @@ guess = "melee"
 
 print(score_guess(guess, target))
 # Output: (0, 1, 1, 1, 1)
+=======
+                if guess.count(guess[0:i]) > target[0:i].count(guess[i]):
+                    score[i] = 0
+
+    return tuple(score) # Just for DevRaf!
+
+guess = "melee"
+target = "elect"
+
+print(score_guess(guess, target))
+# Output: (2, 2, 2, 2, 2)
+>>>>>>> 7aa0b24b28153d47dd37d45f54a15f7399777ad1
 
