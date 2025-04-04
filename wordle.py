@@ -23,33 +23,44 @@ def instructions():
     Score:  X O _ _ _
     '''
     print(rules)
-    input("Press enter to begin... ")
+    input("Press enter to continue... ")
 
 def get_target():
-    """get a random word from target.txt"""
+    """get a random word from target-words.txt"""
     with open("./resources/target-words.txt", "r") as target_list:
         target_words = []
         for line in target_list:
             target_words.append(line.strip())
-        target = str.upper(random.choice(target_words))
+        target = str.lower(random.choice(target_words))
         return target
 
-with open("./resources/all-words.txt", "r") as all_list:
-    all_words = []
-    for line in all_list:
-        all_words.append(line.strip())
+def valid_words():
+    """get a list of all valid words"""
+    with open("./resources/all-words.txt", "r") as all_words:
+        valid_words = []
+        for line in all_words:
+            valid_words.append(line.strip())
+    return valid_words
 
+def get_guess():
+    """get a user guess"""
+    guess = str.lower(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\nGuess: "))
+    guess_validate(guess)
+    return guess
 
-# TODO #6
-# Prompt the user to enter a guess.
-
-# TODO #7
-# Check if the guess that is entered is a valid guess.
-# Case insensitivity!
-
-
-# TODO #8
-# Score the guess by providing clues on each character’s match to the target word’s characters.
+def guess_validate(guess):
+    if guess == "help":
+        instructions()
+        get_guess()
+    elif len(guess) != len(target):
+        print(f"\"{guess}\" is {len(guess)} letters long, your guess should be {len(target)} letters long.")
+        get_guess()
+    elif guess not in valid_words():
+        print("That is not a valid word, please try again")
+        get_guess()
+    else:
+        return guess
+    
 def score_guess(guess, target):
     """Score guesses by letter, 
         +1 to score for a letter in GUESS being in TAGET,
@@ -63,28 +74,27 @@ def score_guess(guess, target):
                 score[i] += 1
     return tuple(score) # Just for DevRaf!
 
+
+
+# instructions()
+target = get_target()
+guess = get_guess()
+print(f"Target: {target}")
+
+
+
 # TODO #4
 # Use a sequential algorithm to read a list of valid words and a separate list of target words.
-
-
-# TODO #6
-def get_guess():
-    guess = str.upper(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\nGuess: "))
-    return guess
-
 # TODO #7
 # Check if the guess that is entered is a valid guess.
 # Case insensitivity!
 
 
-
 # TODO #9
 # End the game when the player wins or when all valid attempts are complete.
 
-instructions()
-target = get_target()
-print(f"Target: {target}") # Delete this line later!
-print(get_guess())
+
+
 
 # TODO #10
 # Present a completion message to the user.
