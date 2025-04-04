@@ -5,8 +5,8 @@ Designed to run in a CLI environment
 # Amanda Guest - 20147153
 # 28-March-2025
 
-# TODO #3
-# Present game instructions to player (That is, display an output to the screen).
+import random
+
 def instructions():
     """Define game rules"""
 
@@ -23,37 +23,26 @@ def instructions():
     Score:  X O _ _ _
     '''
     print(rules)
+    input("Press enter to begin... ")
 
-# TODO #4
-# Use a sequential algorithm to read a list of valid words and a separate list of target words.
-with open("./resources/target-words.txt", "r") as target_list:
-    target = []
-    for line in target_list:
-        target.append(line.strip())
+def get_target():
+    """get a random word from target.txt"""
+    with open("./resources/target-words.txt", "r") as target_list:
+        target_words = []
+        for line in target_list:
+            target_words.append(line.strip())
+        target = str.upper(random.choice(target_words))
+        return target
 
 with open("./resources/all-words.txt", "r") as all_list:
     all_words = []
     for line in all_list:
         all_words.append(line.strip())
-    print(f"First 5 words of all-words.txt:\n {all_words[:5]}")
-    print(f"Last 5 words of all-words.txt:\n {all_words[-5 : len(all_words)]}")
-
-# Output:
-# First 5 words of target-words.txt:
-#  ['aback', 'abase', 'abate', 'abbey', 'abbot']
-# Last 5 words of target-words.txt:
-#  ['young', 'youth', 'zebra', 'zesty', 'zonal']
-
-# First 5 words of all-words.txt:
-#  ['aahed', 'aalii', 'aargh', 'aarti', 'abaca']
-# Last 5 words of all-words.txt:
-#  ['zuzim', 'zygal', 'zygon', 'zymes', 'zymic']
 
 
-guess = "melee"
+# TODO #6
+# Prompt the user to enter a guess.
 
-# print(score_guess(guess, target))
-# Output: (0, 1, 1, 1, 1)
 # TODO #7
 # Check if the guess that is entered is a valid guess.
 # Case insensitivity!
@@ -74,19 +63,14 @@ def score_guess(guess, target):
                 score[i] += 1
     return tuple(score) # Just for DevRaf!
 
-# print(score_guess(guess, target))
-
-
 # TODO #9
 # End the game when the player wins or when all valid attempts are complete.
 
+instructions()
+target = get_target()
+print(f"Target: {target}")
+
+
 # TODO #10
 # Present a completion message to the user.
-
-instructions()
-
-
-
-
-
 
