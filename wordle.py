@@ -95,7 +95,7 @@ def guess_list_format(guess):
 # Game Loop
 instructions()
 target = get_target()
-print(f"Target: {target.upper()}")
+# print(f"Target: {target.upper()}") ### Leave here for debugging
 guess_list = []
 for guess_count in range(1,7):
     guess = get_guess() 
@@ -112,7 +112,3 @@ for guess_count in range(1,7):
         guess_count += 1        
 print(f"Sorry, you have used all your guesses, '\n'The word was {target.upper()} '\n'Thanks for playing!")
 exit()
-
-
-
-# TODO #12
