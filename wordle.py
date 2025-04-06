@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 """
 Implementation of the game "Wordle"
 Designed to run in a CLI environment
@@ -60,21 +58,6 @@ def get_guess():
         else: 
             return guess
         
-    """ try to get a user guess
-        check guess validity: length, valid word, 'help'
-        once conditions are met return valid guess
-    """
-    while True:
-        guess = str.lower(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\nGuess: "))
-        if guess == "help":
-            instructions()
-        elif len(guess) != len(target):
-            print(f"\"{guess.upper()}\" is {len(guess)} letters long, your guess should be {len(target)} letters long.")
-        elif guess not in valid_words():
-            print(f"\"{guess.upper()}\" is not a valid word")
-        else: 
-            return guess
-        
 def raw_score(guess, target):
     """ Score guess by letter:
         +1 to score for a letter in GUESS being in TARGET,
@@ -103,22 +86,17 @@ def format_score(score):
 
 def guess_list_format(guess):
     """ display all guesses in a nice format """
-    """ display all guesses in a nice format """
     formatted = ' '
     formatted += ' '.join(guess.upper()) + '\n'
     guess_list.append(formatted)
     for guess in guess_list:
         print(guess, end='\r')
-        print(guess, end='\r')
 
 # Game Loop
-# Game Loop
 instructions()
-target = get_target()
+target = get_target() 
 # print(f"Target: {target.upper()}") ### Leave here for debugging
 guess_list = []
-for guess_count in range(1,7):
-    guess = get_guess() 
 for guess_count in range(1,7):
     guess = get_guess() 
     score = format_score(raw_score(guess, target))
@@ -133,8 +111,4 @@ for guess_count in range(1,7):
         print(f"You have {6 - guess_count} guesses remaining.")
         guess_count += 1        
 print(f"Sorry, you have used all your guesses, '\n'The word was {target.upper()} '\n'Thanks for playing!")
-        print(f"You have {6 - guess_count} guesses remaining.")
-        guess_count += 1        
-print(f"Sorry, you have used all your guesses, '\n'The word was {target.upper()} '\n'Thanks for playing!")
 exit()
->>>>>>> 9e4b27c (fix: remove print target word)
