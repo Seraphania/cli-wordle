@@ -114,8 +114,8 @@ def guess_list_format(guess):
 # Game Loop
 # Game Loop
 instructions()
-# target = get_target() ### Leave here for debugging
-print(f"Target: {target.upper()}")
+target = get_target()
+# print(f"Target: {target.upper()}") ### Leave here for debugging
 guess_list = []
 for guess_count in range(1,7):
     guess = get_guess() 
