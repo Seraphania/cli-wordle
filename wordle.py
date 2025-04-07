@@ -57,7 +57,7 @@ def get_guess():
             print(f"\"{guess.upper()}\" is not a valid word")
         else: 
             return guess
-        
+   
 def raw_score(guess, target):
     """ Score guess by letter:
         +1 to score for a letter in GUESS being in TARGET,
@@ -65,15 +65,24 @@ def raw_score(guess, target):
     """
     score = [0,0,0,0,0]
     for i in range(len(guess)):
-        letter_score = target.find(guess[i])
-        if letter_score >= 0:
-            score[i] += 1
-            if guess[i] == target[i]:
-                score[i] += 1
+        if guess[i] == target[i]:
+            score[i] = 2
+            target = target[:i] + '*' + target[i+1:]
+            guess = guess[:i] + '*' + guess[i+1:]
+    for i in range(len(guess)):
+        if guess[i] == '*':
+            score[i] = 2
+        elif guess[:i+1].count(guess[i]) > target.count(guess[i]):
+            score[i] = 0
+        elif target.find(guess[i]) >=0:
+            score[i] = 1
+        else:
+            score[i] = 0
+
     return tuple(score) # Just for DevRaf!
 
 def format_score(score):
-    """ render the scor is a user-readable format """
+    """ render the score is a user-readable format """
     display_score = []
     for i in score:
         if i == 0:
@@ -94,11 +103,11 @@ def guess_list_format(guess):
 
 # Game Loop
 instructions()
-target = get_target() 
+target = get_target()
 # print(f"Target: {target.upper()}") ### Leave here for debugging
 guess_list = []
 for guess_count in range(1,7):
-    guess = get_guess() 
+    guess = get_guess()
     score = format_score(raw_score(guess, target))
     if raw_score(guess, target) == (2,2,2,2,2):
         print("Congratulations! you guessed the word!")
@@ -111,4 +120,5 @@ for guess_count in range(1,7):
         print(f"You have {6 - guess_count} guesses remaining.")
         guess_count += 1        
 print(f"Sorry, you have used all your guesses, '\n'The word was {target.upper()} '\n'Thanks for playing!")
+input("Press enter to exit... ")
 exit()
