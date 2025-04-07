@@ -113,6 +113,7 @@ for guess_count in range(1,7):
         print("Congratulations! you guessed the word!")
         guess_list_format(guess)
         print("",*score)
+        input("Press enter to exit... ")
         exit()
     else:
         guess_list_format(guess)
