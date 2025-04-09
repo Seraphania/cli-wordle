@@ -7,14 +7,7 @@ Designed to run in a CLI environment
 
 # Senior Developer feedback:
 
-#     Combine the "get_target()" and "valid_words()" functions into a single read-file function.
-
 # Additional "nice to have" Senior Dev feedback:
-
-#     Improve modularity so that words of any length can be used, avoiding magic numbers.
-#     Avoid the use of exit() statements.
-#     Make the game loop a function.
-
 
 # Client feedback:
 
@@ -25,8 +18,17 @@ Designed to run in a CLI environment
 
 import random
 
+path = "./resources/"
 all_words = "all-words.txt"
 target_words = "target-words.txt"
+
+def continue_game(start):
+    """
+    Verify whether the user would like to continue
+    """
+    while start not in ("y", "n"):
+        start = input("Invalid inpuut. To continue please enter 'y' to exit please enter 'n' ")
+    return start
 
 def instructions():
     """
@@ -46,39 +48,33 @@ def instructions():
     Score:  X O _ _ _
     '''
     print(rules)
-    input("Press enter to continue... ")
+    input("Press enter to continue...\n")
 
-def read_wordlist(word_type):
+def read_file(path, file_name):
     """
-    Read wordlist files and return contents as a list
+    Read files and return the contents as a list
     """
-    path = "./resources/"
-    with open(path,word_type, "r") as file:
+    with open(path + file_name, "r") as file:
         words = []
         for line in file:
             words.append(line.strip())
     return words
 
-def get_target(target_list):
-    """
-    Choose a random target word.
-    """
-    target = str.lower(random.choice(target_words))
-    return target
-
-def get_guess(valid_words):
+def get_guess(target, valid_words):
     """
     Try to get a user guess;
     Check guess validity: length, valid word, 'help'
     Once the conditions are met return valid guess.
     """
     while True:
-        guess = str.lower(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\nGuess: "))
+        guess = str.lower(input("Please guess a 5-letter word\nOr type \"help\" to review the instructions\n\nGuess: "))
         if guess == "help":
             instructions()
+        if guess == "hint":
+            print(target)
         elif len(guess) != len(target):
             print(f"\"{guess.upper()}\" is {len(guess)} letters long, your guess should be {len(target)} letters long.")
-        elif guess not in get_valid_words():
+        elif guess not in valid_words:
             print(f"\"{guess.upper()}\" is not a valid word")
         else: 
             return guess
@@ -109,7 +105,7 @@ def calculate_raw_score(guess, target):
 
     return tuple(score) # Just for DevRaf!
 
-def format_score(score):
+def display_score(score):
     """
     Render the score in a user-readable format
     """
@@ -123,37 +119,42 @@ def format_score(score):
             display_score.append("X")
     return tuple(display_score)
 
-def format_guess_list(guess):
+def display_results(guess, guess_list, raw_score):
     """
-    Render all guesses in a user-readable format
+    Render all guesses in a nice user-readable format
     """
     formatted = ' '
     formatted += ' '.join(guess.upper()) + '\n'
     guess_list.append(formatted)
     for guess in guess_list:
         print(guess, end='\r')
+    print("",*display_score(raw_score), '\n')
 
 def game_loop():
-    instructions()
-    valid_words = read_wordlist(all_words)
-    target_words = read_wordlist(target_words)
-    target = str.lower(random.choice(target_words))
-    # print(f"Target: {target.upper()}") ### Leave here for debugging
+    attempts = 6
+    valid_words = read_file(path, all_words)
+    targets = read_file(path, target_words)
+    target = str.lower(random.choice(targets))
+    print(f"Target: {target.upper()}") ### Leave here for debugging
     guess_list = []
-    for guess_count in range(1,7):
-        guess = get_guess()
-        score = format_score(calculate_raw_score(guess, target))
-        if calculate_raw_score(guess, target) == (2,2,2,2,2):
+    for guess_count in range(1, (attempts + 1)):
+        guess = get_guess(target, valid_words)
+        raw_score = calculate_raw_score(guess, target)
+        if raw_score == (2,2,2,2,2):
             print("Congratulations! you guessed the word!")
-            format_guess_list(guess)
-            print("",*score)
-            input("Press enter to exit... ")
-            exit()
+            display_results(guess, guess_list, raw_score)
+            return continue_game(input("Would you like to play again? y/n... "))
         else:
-            format_guess_list(guess)
-            print("",*score)
-            print(f"You have {6 - guess_count} guesses remaining.")
-            guess_count += 1        
-    print(f"Sorry, you have used all your guesses, '\n'The word was {target.upper()} '\n'Thanks for playing!")
-    input("Press enter to exit... ")
-    exit()
+            display_results(guess, guess_list, raw_score)
+            print(f"You have {attempts - guess_count} guesses remaining.")
+            guess_count += 1   
+    print(f"Sorry, you have used all your guesses,\nThe word was {target.upper()}\nThanks for playing!")
+    return continue_game(input("Would you like to play again? y/n... "))
+
+instructions()        
+while True:
+    if game_loop() == "y":
+        game_loop()
+    elif game_loop() == "n":
+        input("Thanks for playing CLI-Wordle :)\nPress enter to exit... ")
+        break
