@@ -11,23 +11,26 @@ Designed to run in a CLI environment
 
 # Client feedback:
 
-#     Improve readability by adding line breaks after the score is displayed.
-#     Add the ability to play again.
+
+
 #     Save the number of attempts to a file.
 #     When a game is won, show the number of attempts made, as well as the average number of attempts.
 
 import random
+import os
 
 path = "./resources/"
 all_words = "all-words.txt"
 target_words = "target-words.txt"
+stats = "stat-file.txt"
+attempts = 6
 
 def continue_game(start):
     """
     Verify whether the user would like to continue
     """
     while start not in ("y", "n"):
-        start = input("Invalid inpuut. To continue please enter 'y' to exit please enter 'n' ")
+        start = input("Invalid input. To continue please enter 'y' to exit please enter 'n' ")
     return start
 
 def instructions():
@@ -130,31 +133,54 @@ def display_results(guess, guess_list, raw_score):
         print(guess, end='\r')
     print("",*display_score(raw_score), '\n')
 
+def continue_game(start):
+    """
+    Verify whether the user would like to continue
+    """
+    while start not in ("y", "n"):
+        start = input("Invalid input. To continue please enter 'y' to exit please enter 'n' ")
+    return start
+
+# def save_stats(guess_count):
+#     if not os.path.isfile(stats):
+#         with open(path + stats, 'w') as file:
+#             file.write(guess_count)
+#     else:
+#          with open(path + stats, 'a') as file:
+#             file.write(guess_count)       
+
+# def print_stats():
+#     stats = read_file(path, stats)
+#     average = average(stats)
+#     return average
+
 def game_loop():
-    attempts = 6
     valid_words = read_file(path, all_words)
     targets = read_file(path, target_words)
     target = str.lower(random.choice(targets))
-    print(f"Target: {target.upper()}") ### Leave here for debugging
     guess_list = []
     for guess_count in range(1, (attempts + 1)):
         guess = get_guess(target, valid_words)
         raw_score = calculate_raw_score(guess, target)
         if raw_score == (2,2,2,2,2):
-            print("Congratulations! you guessed the word!")
             display_results(guess, guess_list, raw_score)
+            print("Congratulations! you guessed the word!")
+            # print(f"You guessed the word in {guess_count} guesses\nThe average number of guesses is {print_stats()}")
+            # save_stats(guess_count)
+            print (f"")
             return continue_game(input("Would you like to play again? y/n... "))
         else:
             display_results(guess, guess_list, raw_score)
             print(f"You have {attempts - guess_count} guesses remaining.")
-            guess_count += 1   
     print(f"Sorry, you have used all your guesses,\nThe word was {target.upper()}\nThanks for playing!")
+    # save_stats(guess_count)
+    # print(f"The average number of guesses is {print_stats()}")
     return continue_game(input("Would you like to play again? y/n... "))
 
 instructions()        
 while True:
-    if game_loop() == "y":
-        game_loop()
-    elif game_loop() == "n":
-        input("Thanks for playing CLI-Wordle :)\nPress enter to exit... ")
+    response = game_loop()
+    if response != "y":
         break
+
+input("Thanks for playing CLI-Wordle :)\nPress enter to exit... ")
