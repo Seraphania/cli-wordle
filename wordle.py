@@ -5,33 +5,13 @@ Designed to run in a CLI environment
 # Amanda Guest - 20147153
 # 28-March-2025
 
-# Senior Developer feedback:
-
-# Additional "nice to have" Senior Dev feedback:
-
-# Client feedback:
-
-
-
-#     Save the number of attempts to a file.
-#     When a game is won, show the number of attempts made, as well as the average number of attempts.
-
 import random
-import os
 
 path = "./resources/"
 all_words = "all-words.txt"
 target_words = "target-words.txt"
 stats = "stat-file.txt"
 attempts = 6
-
-def continue_game(start):
-    """
-    Verify whether the user would like to continue
-    """
-    while start not in ("y", "n"):
-        start = input("Invalid input. To continue please enter 'y' to exit please enter 'n' ")
-    return start
 
 def instructions():
     """
@@ -133,6 +113,27 @@ def display_results(guess, guess_list, raw_score):
         print(guess, end='\r')
     print("",*display_score(raw_score), '\n')
 
+def save_stats(guess_count):
+    """
+    Save the number of guesses this game to a file
+    """
+    with open(path + stats, 'a+') as file:
+        file.write(str(guess_count))
+        file.write('\n') 
+
+def average_stat():
+    """
+    Retun the average guess count from all games played locally
+    rounded to the nearest whole number
+    """
+    with open (path + stats, 'r') as file:
+        stat_list = []
+        for line in file:
+            stat_list.append(int(line.strip()))
+    
+    average_stat = round(sum(stat_list) / len(stat_list))
+    return average_stat
+
 def continue_game(start):
     """
     Verify whether the user would like to continue
@@ -141,20 +142,10 @@ def continue_game(start):
         start = input("Invalid input. To continue please enter 'y' to exit please enter 'n' ")
     return start
 
-# def save_stats(guess_count):
-#     if not os.path.isfile(stats):
-#         with open(path + stats, 'w') as file:
-#             file.write(guess_count)
-#     else:
-#          with open(path + stats, 'a') as file:
-#             file.write(guess_count)       
-
-# def print_stats():
-#     stats = read_file(path, stats)
-#     average = average(stats)
-#     return average
-
 def game_loop():
+    """
+    Main gameplay loop
+    """
     valid_words = read_file(path, all_words)
     targets = read_file(path, target_words)
     target = str.lower(random.choice(targets))
@@ -165,16 +156,17 @@ def game_loop():
         if raw_score == (2,2,2,2,2):
             display_results(guess, guess_list, raw_score)
             print("Congratulations! you guessed the word!")
-            # print(f"You guessed the word in {guess_count} guesses\nThe average number of guesses is {print_stats()}")
-            # save_stats(guess_count)
+            save_stats(guess_count)
+            print(f"You guessed the word in {guess_count} guesses\nThe average number of guesses is {average_stat()}")
+
             print (f"")
             return continue_game(input("Would you like to play again? y/n... "))
         else:
             display_results(guess, guess_list, raw_score)
             print(f"You have {attempts - guess_count} guesses remaining.")
     print(f"Sorry, you have used all your guesses,\nThe word was {target.upper()}\nThanks for playing!")
-    # save_stats(guess_count)
-    # print(f"The average number of guesses is {print_stats()}")
+    save_stats(guess_count)
+    print(f"The average number of guesses is {average_stat()}")
     return continue_game(input("Would you like to play again? y/n... "))
 
 instructions()        
