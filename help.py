@@ -1,0 +1,2 @@
+import wordle
+help(wordle)

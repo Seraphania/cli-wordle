@@ -169,10 +169,14 @@ def game_loop():
     print(f"The average number of guesses is {average_stat()}")
     return continue_game(input("Would you like to play again? y/n... "))
 
-instructions()        
-while True:
-    response = game_loop()
-    if response != "y":
-        break
+def play():
+    instructions()        
+    while True:
+        response = game_loop()
+        if response != "y":
+            break
 
-input("Thanks for playing CLI-Wordle :)\nPress enter to exit... ")
+    input("Thanks for playing CLI-Wordle :)\nPress enter to exit... ")
+
+if __name__ == "__main__":
+    play()
