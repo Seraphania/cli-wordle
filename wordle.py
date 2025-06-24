@@ -4,10 +4,10 @@ Designed to run in a CLI environment
 """
 # Amanda Guest - 20147153
 # 28-March-2025
-
+# for much cooler version made by someone much better see: word.audino.net
 import random
 
-path = "./resources/"
+path = "./resources/" # constants should be uppercase
 all_words = "all-words.txt"
 target_words = "target-words.txt"
 stats = "stat-file.txt"
@@ -121,7 +121,7 @@ def save_stats(guess_count):
         file.write(str(guess_count))
         file.write('\n') 
 
-def average_stat():
+def average_stat(): # calculate_average would be a better name
     """
     Retun the average guess count from all games played locally
     rounded to the nearest whole number
@@ -129,7 +129,7 @@ def average_stat():
     with open (path + stats, 'r') as file:
         stat_list = []
         for line in file:
-            stat_list.append(int(line.strip()))
+            stat_list.append(int(line.strip())) # int strips alutomatically don't need strip
     
     average_stat = round(sum(stat_list) / len(stat_list))
     return average_stat
@@ -159,7 +159,7 @@ def game_loop():
             save_stats(guess_count)
             print(f"You guessed the word in {guess_count} guesses\nThe average number of guesses is {average_stat()}")
 
-            print (f"")
+            print (f"") # Could be better bit super clear.
             return continue_game(input("Would you like to play again? y/n... "))
         else:
             display_results(guess, guess_list, raw_score)
