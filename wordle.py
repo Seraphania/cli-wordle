@@ -4,7 +4,7 @@ Designed to run in a CLI environment
 """
 # Amanda Guest - 20147153
 # 28-March-2025
-# for much cooler version made by someone much better see: word.audino.net
+# for much cooler version made by someone much better, see: word.audino.net
 import random
 
 path = "./resources/" # constants should be uppercase
